@@ -4,7 +4,7 @@ export const postList = [
     depthPosts : [
       {
         postTitle : 'Your First Component (컴포넌트란)',
-        fileUrl : ''
+        fileUrl : '../posts/2018-03-29-Where_do_you_place_the_JavaScript.md'
       },
       {
         postTitle : 'Importing and Exporting Components',
