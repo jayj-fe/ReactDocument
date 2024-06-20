@@ -7,6 +7,7 @@ const outDir = resolve(__dirname, "docs");
 export default defineConfig({
   base: "./",
   plugins: [react()],
+  assetsInclude: ['**/*.md'],
   build: {
     outDir
   },

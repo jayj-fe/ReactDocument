@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react"
 import usePostImfomation from "../stores/postInfomation"
-import axios from "axios";
-import {marked} from "marked";
-import ReactMarkdown from 'react-markdown'
+import Markdown from 'markdown-to-jsx';
 
 function DocumentBody() {
   const { usePostInfomation } = usePostImfomation(); 
@@ -15,9 +13,15 @@ function DocumentBody() {
   }, [usePostInfomation])
 
   const fileLoder = (url) => {
-    axios.get(url).then((response) => {
-      setPostData(response.data);
-    });
+    console.log(url)
+    import(url)
+        .then(res => {
+            fetch(res.default)
+                .then(res => res.text())
+                .then(res => setPostData(res))
+                .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
   }
 
   return (
@@ -27,8 +31,9 @@ function DocumentBody() {
 
         <hr />
         <h1>{usePostInfomation.postTitle}</h1>
-        {/* <ReactMarkdown source={postData} /> */}
-        <div dangerouslySetInnerHTML={{ __html: marked(postData) }} />
+        <section id="post-wrapper">
+          <Markdown children={postData} />
+        </section>
       </section>
     </>
   )

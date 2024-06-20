@@ -1,9 +1,9 @@
 ---
-title: Where do you place the JavaScript?
+title: Your First Component
 author: Jay.J
-date: 2018-03-29 08:11:39 +0900
-categories: [javascript]
-tags: [javascript]
+date: 2024-06-20 08:11:39 +0900
+categories: [javascript, reactJs]
+tags: [javascript, reactJs]
 math: true
 mermaid: true
 image: /blogAPI/assets/img/javaScript.png
@@ -11,8 +11,8 @@ image: /blogAPI/assets/img/javaScript.png
 
 <br>
 
-## Where do you place the JavaScript?
-> JavaScript는 어디에 두어야합니까?
+## Your First Component
+> 첫번째 컴포넌트
 
 <br>
 
@@ -23,7 +23,7 @@ head Tag 섹션에 삽입하거나 body Tag 섹션의 시작 부분에 놓는 �
 스크립트를 로드한 후 페이지를 읽기 때문에 성능면에서 안좋다.  
 <br>
 
-#### 브라우저가 웹 사이트를 로드 할 때 일어나는 일
+#### 컴포넌트 정의하기
 1. 문서 가져 온다 (예 : index.html, index.asp, main.php ...등)
 2. HTML 구문 분석한다.
 3. 파서는 문서를 위에서 부터 아래로 읽는다.  
