@@ -1,42 +1,75 @@
 export const postList = [
   {
-    depthName : 'Describing UI',
+    depthName : 'UI 표현하기:Describing UI',
     depthPosts : [
       {
-        postTitle : 'Your First Component (컴포넌트란)',
-        fileUrl : '../posts/2018-03-29-Where_do_you_place_the_JavaScript.md'
+        postTitle : '첫 번째 컴포넌트:Your First Component',
+        fileUrl : '../posts/2024-06-17-Your_First_Component.md'
       },
       {
-        postTitle : 'Importing and Exporting Components',
-        fileUrl : ''
+        postTitle : '컴포넌트 import 및 export 하기:Importing and Exporting Componentsy',
+        fileUrl : '../posts/2024-06-17-Importing_and_Exporting_Componentsy.md'
       },
       {
-        postTitle : 'Writing Markup with JSX (JSX 다루기)',
-        fileUrl : ''
+        postTitle : 'JSX로 마크업 작성하기:Writing Markup with JSX',
+        fileUrl : '../posts/2024-06-17-Writing_Markup_with_JSX.md'
       },
       {
-        postTitle : 'JavaScript in JSX with Curly Braces',
-        fileUrl : ''
+        postTitle : '중괄호가 있는 JSX 안에서 자바스크립트 사용하기:JavaScript in JSX with Curly Braces',
+        fileUrl : '../posts/2024-06-17-JavaScript_in_JSX_with_Curly_Braces.md'
       },
       {
-        postTitle : 'Passing Props to a Component',
-        fileUrl : ''
+        postTitle : '컴포넌트에 props 전달하기:Passing Props to a Component',
+        fileUrl : '../posts/2024-06-17-Passing_Props_to_a_Component.md'
       },
       {
-        postTitle : 'Conditional Rendering',
-        fileUrl : ''
+        postTitle : '조건부 렌더링:Conditional Rendering',
+        fileUrl : '../posts/2024-06-17-Conditional_Rendering.md'
       },
       {
-        postTitle : 'Rendering Lists',
-        fileUrl : ''
+        postTitle : '리스트 렌더링:Rendering Lists',
+        fileUrl : '../posts/2024-06-18-Rendering_Lists.md'
       },
       {
-        postTitle : 'Keeping Components Pure',
-        fileUrl : ''
+        postTitle : '컴포넌트 순수하게 유지하기:Keeping Components Pure',
+        fileUrl : '../posts/2024-06-18-Keeping_Components_Pure.md'
       },
       {
-        postTitle : 'Understanding Your UI as a Tree',
-        fileUrl : ''
+        postTitle : '트리로서 UI 이해하기:Understanding Your UI as a Tree',
+        fileUrl : '../posts/2024-06-18-Understanding_Your_UI_as_a_Tree.md'
+      },
+    ]
+  },
+  {
+    depthName : '상호작용 추가하기:Adding Interactivity',
+    depthPosts : [
+      {
+        postTitle : '이벤트에 응답하기:Responding to Events',
+        fileUrl : '../posts/2024-06-18-Responding_to_Events.md'
+      },
+      {
+        postTitle : 'State: 컴포넌트의 기억 저장소:State:A Components Memory',
+        fileUrl : '../posts/2024-06-18-State_A_Components_Memory.md'
+      },
+      {
+        postTitle : '렌더링 그리고 커밋:Render and Commit',
+        fileUrl : '../posts/2024-06-19-Render_and_Commit.md'
+      },
+      {
+        postTitle : '스냅샷으로서의 State:State as a Snapshot',
+        fileUrl : '../posts/2024-06-19-State_as_a_Snapshot.md'
+      },
+      {
+        postTitle : 'state 업데이트 큐:Queueing a Series of State Updates',
+        fileUrl : '../posts/2024-06-19-Queueing_a_Series_of_State_Updates.md'
+      },
+      {
+        postTitle : '객체 State 업데이트하기',
+        fileUrl : '../posts/2024-06-19-Conditional_Rendering.md'
+      },
+      {
+        postTitle : '배열 State 업데이트하기',
+        fileUrl : '../posts/2024-06-19-Conditional_Rendering.md'
       },
     ]
   }

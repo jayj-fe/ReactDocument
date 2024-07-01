@@ -1,5 +1,5 @@
 ---
-title: JavaScript in JSX with Curly Braces
+title: Render_and_Commit
 author: Jay.J
 date: 2024-06-17 08:11:39 +0900
 categories: [javascript, reactJs]
@@ -11,8 +11,8 @@ image: /blogAPI/assets/img/javaScript.png
 
 <br>
 
-## JavaScript in JSX with Curly Braces
-> 중괄호가 있는 JSX 안에서 자바스크립트 사용하기
+## Render_and_Commit
+> 렌더링 그리고 커밋
 <br>
 
 ### 따옴표로 문자열 전달하기
