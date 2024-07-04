@@ -248,5 +248,5 @@ setFriendCount(fc => fc * 2);
 <br>
 
 ## 참고 했던 자료 및 블로그  
- - <a href="https://ko.react.dev/learn/state-as-a-snapshot" target="_blank">https://ko.react.dev/learn/state-as-a-snapshot</a>
+ - <a href="https://ko.react.dev/learn/queueing-a-series-of-state-updates" target="_blank">https://ko.react.dev/learn/queueing-a-series-of-state-updates</a>
  
