@@ -24,7 +24,7 @@ image: /blogAPI/assets/img/react.png
 
 <br>
 
-<img src="../assets/img/ui_tree.png" alt="" style="max-width:500px">
+<img src="../assets/img/react//ui_tree.png" alt="" style="max-width:500px">
 
 > React는 컴포넌트로부터 UI 트리를 생성한다.<br>
 > 위 예제 그림은 UI 트리는 DOM을 렌더링하는 데 사용됩니다.
@@ -103,7 +103,7 @@ export default [
   ];
 ```
 <br>
-<img src="../assets/img/render_tree.png" alt="" style="max-width:500px">
+<img src="../assets/img/react//render_tree.png" alt="" style="max-width:500px">
 
 우리는 위의 렌더 트리를 구성할 수 있다.<br>
 <br>
@@ -150,7 +150,7 @@ export default function Color({value}) {
 }
 ```
 <br>
-<img src="../assets/img/render_tree2.png" alt="" style="max-width:500px">
+<img src="../assets/img/react//render_tree2.png" alt="" style="max-width:500px">
 
 > 조건부 렌더링을 사용하면, 서로 다른 렌더링에서 렌더 트리가 다른 컴포넌트를 렌더링할 수 있다.
 

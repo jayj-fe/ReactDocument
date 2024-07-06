@@ -23,7 +23,7 @@ image: /blogAPI/assets/img/react.png
 
 <br>
 
-<img src="../assets/img/i_rerender.png" alt="" style="max-width:500px">
+<img src="../assets/img/react//i_rerender.png" alt="" style="max-width:500px">
 
 <br>
 
@@ -64,7 +64,7 @@ export default function Image() {
 
 <br>
 
-<img src="../assets/img/i_rerender2.png" alt="" style="max-width:500px">
+<img src="../assets/img/react//i_rerender2.png" alt="" style="max-width:500px">
 
 <br>
 
