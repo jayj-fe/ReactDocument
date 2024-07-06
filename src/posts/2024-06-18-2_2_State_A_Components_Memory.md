@@ -2,11 +2,11 @@
 title: State A Components Memory
 author: Jay.J
 date: 2024-06-18 08:11:39 +0900
-categories: [javascript, reactJs]
-tags: [javascript, reactJs]
+categories: [javascript, ReactJs]
+tags: [javascript, ReactJs]
 math: true
 mermaid: true
-image: /blogAPI/assets/img/javaScript.png
+image: /blogAPI/assets/img/react.png
 ---
 
 <br>
