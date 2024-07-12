@@ -64,12 +64,45 @@ export const postList = [
         fileUrl : '../posts/2024-06-19-2_5_Queueing_a_Series_of_State_Updates.md'
       },
       {
-        postTitle : '객체 State 업데이트하기',
+        postTitle : '객체 State 업데이트하기:Updating objects in state',
         fileUrl : '../posts/2024-06-19-2_6_Updating_objects_in_state.md'
       },
       {
-        postTitle : '배열 State 업데이트하기',
+        postTitle : '배열 State 업데이트하기:Updating arrays in state',
         fileUrl : '../posts/2024-06-19-2_7_Updating-arrays-in-state.md'
+      },
+    ]
+  },
+  {
+    depthName : 'State 관리하기:Managing State',
+    depthPosts : [
+      {
+        postTitle : 'State를 사용해 Input 다루기:Reacting to Input with Stat',
+        fileUrl : '../posts/2024-06-24-3_1_Reacting_to_Input_with_Stat.md'
+      },
+      {
+        postTitle : 'State 구조 선택하기:Choosing the State Structure',
+        fileUrl : '../posts/2024-06-24-3_2_Choosing_the_State_Structure.md'
+      },
+      {
+        postTitle : '컴포넌트 간 State 공유하기:Sharing State Between Components',
+        fileUrl : '../posts/2024-06-25-3_3_Sharing_State_Between_Components.md'
+      },
+      {
+        postTitle : 'State를 보존하고 초기화하기:Preserving and Resetting State',
+        fileUrl : '../posts/2024-06-25-3_4_Preserving_and_Resetting_State.md'
+      },
+      {
+        postTitle : 'state 로직을 reducer로 작성하기:Extracting State logic into a reducer',
+        fileUrl : '../posts/2024-06-26-3_5_Extracting_State_logic_into_a_reducer.md'
+      },
+      {
+        postTitle : 'Context를 사용해 데이터를 깊게 전달하기:Passing-data-Deeply-with-Context',
+        fileUrl : '../posts/2024-06-26-3_6_Passing-data-Deeply-with-Context.md'
+      },
+      {
+        postTitle : 'Reducer와 Context로 앱 확장하기:Scaling up with Reducer and Context',
+        fileUrl : '../posts/2024-06-27-3_7_Scaling-up-with-Reducer-and-Context.md'
       },
     ]
   }
