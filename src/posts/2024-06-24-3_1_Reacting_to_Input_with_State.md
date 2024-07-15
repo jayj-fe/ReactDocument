@@ -1,7 +1,7 @@
 ---
-title: Updating Arrays In State
+title: Reacting to Input with State
 author: Jay.J
-date: 2024-06-19 08:11:39 +0900
+date: 2024-06-24 08:11:39 +0900
 categories: [javascript, ReactJs]
 tags: [javascript, ReactJs]
 math: true
@@ -11,500 +11,288 @@ image: /blogAPI/assets/img/react.png
 
 <br>
 
-## Updating Arrays In State
-> 배열 State 업데이트하기
+## Reacting to Input with State
+> State를 사용해 Input 다루기
 
-### 변경하지 않고 배열 업데이트하기
-객체와 마찬가지로 React state에서 배열은 읽기 전용으로 처리해야 한다.<br>
-즉 ```arr[0] = 'bird'```처럼 배열 내부의 항목을 재할당해서는 안 되며 ```push()```나 ```pop()```같은 함수로 배열을 변경해서는 안된다.<br>
-<br>
-배열을 업데이트할 때마다 ```filter()```나 ```map()```을 이용하여 새 배열을 state 설정 함수에 전달해야 한다.
-<br>
+### 선언형 UI와 명령형 UI
 
 <table>
-  <caption>Updating Arrays In State</caption>
+  <caption>선언형 UI와 명령형 UI 비교</caption>
   <thead>
     <tr>
-      <th scope='col'></th>
-      <th scope='col'>비선호(배열을 변경)</th>
-      <th scope='col'>선호(새 배열을 반환)</th>
+      <th scope='col'>명령형 UI</th>
+      <th scope='col'>선언형 UI</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>추가</td>
-      <td>push, unshift</td>
-      <td>concat, [...arr] 전개 연산자</td>
+      <td>
+       - 폼에 무언가를 입력하면 “제출” 버튼이 활성화된다.<br>
+       - ”제출” 버튼을 누르면 폼과 버튼이 비활성화되고 스피너가 나타난다.<br>
+       - 네트워크 요청이 성공하면 폼은 숨겨질 것이고 “감사합니다.” 메시지가 나타난다.<br>
+       - 네트워크 요청이 실패하면 오류 메시지가 보일 것이고 폼은 다시 활성화된다.
+      </td>
+      <td>
+        - 컴포넌트의 다양한 시각적 state를 확인한다.<br>
+        - 무엇이 state 변화를 트리거하는지 알아낸다.<br>
+        - useState를 사용해서 메모리의 state를 표현한다.<br>
+        - 불필요한 state 변수를 제거한다.<br>
+        - state 설정을 위해 이벤트 핸들러를 연결한다.
+      </td>
     </tr>
     <tr>
-      <td>제거</td>
-      <td>pop, shift, splice</td>
-      <td>filter, slice</td>
-    </tr>
-    <tr>
-      <td>교체</td>
-      <td>splice, arr[i] = ... 할당</td>
-      <td>map</td>
-    </tr>
-    <tr>
-      <td>정렬</td>
-      <td>reverse, sort</td>
-      <td>배열을 복사한 이후 처리</td>
+      <td>
+       → 여기서 이걸 누르면,<br>
+       그래서 눌렀을때 반응을보고 이걸 하고,<br>
+       다음 액션에서 이걸하고… 
+      </td>
+      <td>
+        이 state 에서는 UI type 1를 보여줘<br>
+        다른 state 에서는 UI type 2 를 보여줘
+      </td>
     </tr>
   </tbody>
 </table>
 
-### ⚠️주의
-- slice를 사용하면 배열 또는 그 일부를 복사할 수 있다.
-- splice는 배열을 <b>변경</b>한다. (항목을 추가하거나 제거한다.)
-> React에서는, state의 객체나 배열을 변경하지 않는 게 좋기 때문에 slice를 훨씬 더 자주 사용하게 될 것이다.
-
-#### 배열에 항목 추가하기
-
-<b>전개 연산자를 이용한 추가</b>
-```js
-import { useState } from 'react';
-
-let nextId = 0;
-
-export default function List() {
-  const [name, setName] = useState('');
-  const [artists, setArtists] = useState([]);
-
-  return (
-    <>
-      <h1>Inspiring sculptors:</h1>
-      <input
-        value={name}
-        onChange={e => setName(e.target.value)}
-      />
-      <button onClick={() => {
-        setName('');
-        <!-- 전개 연산자를 이용한 추가 -->
-        setArtists([
-          ...artists,
-          { id: nextId++, name: name }
-        ]);
-      }}>Add</button>
-      <ul>
-        {artists.map(artist => (
-          <li key={artist.id}>{artist.name}</li>
-        ))}
-      </ul>
-    </>
-  );
-}
-```
 <br>
 
-#### 배열에서 항목 제거하기
+### 첫 번째: 컴포넌트의 다양한 시각적 state 확인하기
 
-<b>filter 함수를 이용한 제거</b>
+먼저 사용자가 볼 수 있는 UI의 모든 “state”를 시각화해야 한다.
+- Empty: 폼은 비활성화된 “제출” 버튼을 가지고 있다.
+- Typing: 폼은 활성화된 “제출” 버튼을 가지고 있다.
+- Submitting: 폼은 완전히 비활성화되고 스피너가 보인다.
+- Success: 폼 대신에 “감사합니다” 메시지가 보인다.
+- Error: “Typing” state와 동일하지만 오류 메시지가 보인다.
+
 ```js
-import { useState } from 'react';
-
-let initialArtists = [
-  { id: 0, name: 'Marta Colvin Andrade' },
-  { id: 1, name: 'Lamidi Olonade Fakeye'},
-  { id: 2, name: 'Louise Nevelson'},
-];
-
-export default function List() {
-  const [artists, setArtists] = useState(
-    initialArtists
-  );
-
-  return (
-    <>
-      <h1>Inspiring sculptors:</h1>
-      <ul>
-        {artists.map(artist => (
-          <li key={artist.id}>
-            {artist.name}{' '}
-            <button onClick={() => {
-              setArtists(
-                <!-- filter 함수를 이용한 제거 -->
-                artists.filter(a =>
-                  a.id !== artist.id
-                )
-              );
-            }}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-}
-```
-<br>
-
-#### 배열 변환하기
-
-<b>map 함수를 이용한 변환</b>
-```js
-import { useState } from 'react';
-
-let initialShapes = [
-  { id: 0, type: 'circle', x: 50, y: 100 },
-  { id: 1, type: 'square', x: 150, y: 100 },
-  { id: 2, type: 'circle', x: 250, y: 100 },
-];
-
-export default function ShapeEditor() {
-  const [shapes, setShapes] = useState(
-    initialShapes
-  );
-
-  function handleClick() {
-    // map 함수를 이용한 변환
-    const nextShapes = shapes.map(shape => {
-      if (shape.type === 'square') {
-        // 변경시키지 않고 반환한다.
-        return shape;
-      } else {
-        // 50px 아래로 이동한 새로운 원을 반환한다.
-        return {
-          ...shape,
-          y: shape.y + 50,
-        };
-      }
-    });
-    // 새로운 배열로 리렌더링합니다.
-    setShapes(nextShapes);
+export default function Form({
+  // 'submitting', 'error', 'success'로 한 번 변경해보세요:
+  status = 'empty'
+}) {
+  if (status === 'success') {
+    return <h1>That's right!</h1>
   }
-
   return (
     <>
-      <button onClick={handleClick}>
-        Move circles down!
+      <h2>City quiz</h2>
+      <p>
+        In which city is there a billboard that turns air into drinkable water?
+      </p>
+      <form>
+        <textarea disabled={
+          status === 'submitting'
+        } />
+        <br />
+        <button disabled={
+          status === 'empty' ||
+          status === 'submitting'
+        }>
+          Submit
+        </button>
+        {status === 'error' &&
+          <p className="Error">
+            Good guess but a wrong answer. Try again!
+          </p>
+        }
+      </form>
+      </>
+  );
+}
+```
+
+### 📝 많은 시각적 state를 한 번에 보여주기
+#### App.js
+```js
+import Form from './Form.js';
+
+let statuses = [
+  'empty',
+  'typing',
+  'submitting',
+  'success',
+  'error',
+];
+
+export default function App() {
+  return (
+    <>
+      {statuses.map(status => (
+        <section key={status}>
+          <h4>Form ({status}):</h4>
+          <Form status={status} />
+        </section>
+      ))}
+    </>
+  );
+}
+```
+
+#### Form.js
+```js
+export default function Form({ status }) {
+  if (status === 'success') {
+    return <h1>That's right!</h1>
+  }
+  return (
+    <form>
+      <textarea disabled={
+        status === 'submitting'
+      } />
+      <br />
+      <button disabled={
+        status === 'empty' ||
+        status === 'submitting'
+      }>
+        Submit
       </button>
-      {shapes.map(shape => (
-        <div style={{
-          background: 'purple',
-          position: 'absolute',
-          left: shape.x,
-          top: shape.y,
-          borderRadius:
-            shape.type === 'circle'
-              ? '50%' : '',
-          width: 20,
-          height: 20,
-        }} />
-      ))}
-    </>
-  );
-}
-```
-<br>
-
-#### 배열 내 항목 교체하기
-
-<b>map 함수를 이용한 교체</b>
-```js
-import { useState } from 'react';
-
-let initialCounters = [
-  0, 0, 0
-];
-
-export default function CounterList() {
-  const [counters, setCounters] = useState(
-    initialCounters
-  );
-
-  function handleIncrementClick(index) {
-    // map 함수를 이용한 교체
-    const nextCounters = counters.map((c, i) => {
-      if (i === index) {
-        // 클릭된 counter를 증가시킨다.
-        return c + 1;
-      } else {
-        // 변경되지 않은 나머지를 반환한다.
-        return c;
+      {status === 'error' &&
+        <p className="Error">
+          Good guess but a wrong answer. Try again!
+        </p>
       }
-    });
-    setCounters(nextCounters);
-  }
-
-  return (
-    <ul>
-      {counters.map((counter, i) => (
-        <li key={i}>
-          {counter}
-          <button onClick={() => {
-            handleIncrementClick(i);
-          }}>+1</button>
-        </li>
-      ))}
-    </ul>
+    </form>
   );
 }
 ```
+> “살아있는 스타일가이드(living styleguides)” 또는 “스토리북(storybooks)“
+
 <br>
 
-#### 배열에 항목 삽입하기
+### 두 번째: 무엇이 state 변화를 트리거하는지 알아내기
 
-<b>slice 함수를 이용한 삽입</b>
+두 종류의 인풋 유형으로 state 변경을 트리거할 수 있다.
+
+1. 버튼을 누르거나, 필드를 입력하거나, 링크를 이동하는 것 등의 <b>휴먼 인풋</b>
+2. 네트워크 응답이 오거나, 타임아웃이 되거나, 이미지를 로딩하거나 하는 등의 <b>컴퓨터 인풋</b>
+
+두 가지 경우 모두 <b>UI를 업데이트하기 위해서는 state 변수를 설정</b>해야 한다. <br>
+지금 만들고 있는 폼의 경우 몇 가지 입력에 따라 state를 변경해야 한다.
+
+- 텍스트 인풋을 변경하면 (휴먼) 텍스트 상자가 비어있는지 여부에 따라 state를 Empty에서 Typing 으로 또는 그 반대로 변경해야 한다.
+- 제출 버튼을 클릭하면 (휴먼) Submitting state를 변경해야 한다.
+- 네트워크 응답이 성공적으로 오면 (컴퓨터) Success state를 변경해야 한다.
+- 네트워크 요청이 실패하면 (컴퓨터) 해당하는 오류 메시지와 함께 Error state를 변경해야 한다.
+
+<br>
+
+### 세 번째: 메모리의 state를 useState로 표현하기
+state는 “움직이는 조각”이다. <b>“움직이는 조각”은 적을수록 좋다</b>
+
+```js
+const [answer, setAnswer] = useState('');
+const [error, setError] = useState(null);
+const [isEmpty, setIsEmpty] = useState(true);
+const [isTyping, setIsTyping] = useState(false);
+const [isSubmitting, setIsSubmitting] = useState(false);
+const [isSuccess, setIsSuccess] = useState(false);
+const [isError, setIsError] = useState(false);
+```
+
+<br>
+
+### 네 번째: 불필요한 state 변수를 제거하기
+state가 사용자에게 유효한 UI를 보여주지 않는 경우를 방지하는 것이다
+
+- <b>state가 역설을 일으키지는 않는가?</b><Br>
+예를 들면 isTyping과 isSubmitting이 동시에 true일 수는 없다.<br>
+이러한 역설은 보통 state가 충분히 제한되지 않았음을 의미한다.<br>
+여기에는 두 boolean에 대한 네 가지 조합이 있지만 오직 유효한 state는 세 개뿐이다.<br>
+이러한 “불가능한” state를 제거하기 위해 세 가지 값 'typing', 'submitting', 'success'을 하나의 status로 합칠 수 있다.
+
+- <b>다른 state 변수에 이미 같은 정보가 담겨있진 않는가?</b><br>
+isEmpty와 isTyping은 동시에 true가 될 수 없다.<br>
+이를 각각의 state 변수로 분리하면 싱크가 맞지 않거나 버그가 발생할 위험이 있다.<br>
+이 경우에는 운이 좋게도 isEmpty를 지우고 answer.length === 0으로 체크할 수 있다.
+
+- <b>다른 변수를 뒤집었을 때 같은 정보를 얻을 수 있진 않는가?</b><br>
+isError는 error !== null로도 대신 확인할 수 있기 때문에 필요하지 않다.
+
+#### 정리 후 남은 변수
+```js
+const [answer, setAnswer] = useState('');
+const [error, setError] = useState(null);
+const [status, setStatus] = useState('typing'); // 'typing', 'submitting', or 'success'
+```
+
+<br>
+
+### 다섯 번째: state 설정을 위해 이벤트 핸들러를 연결하기
 ```js
 import { useState } from 'react';
 
-let nextId = 3;
-const initialArtists = [
-  { id: 0, name: 'Marta Colvin Andrade' },
-  { id: 1, name: 'Lamidi Olonade Fakeye'},
-  { id: 2, name: 'Louise Nevelson'},
-];
+export default function Form() {
+  const [answer, setAnswer] = useState('');
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState('typing');
 
-export default function List() {
-  const [name, setName] = useState('');
-  const [artists, setArtists] = useState(
-    initialArtists
-  );
+  if (status === 'success') {
+    return <h1>That's right!</h1>
+  }
 
-  function handleClick() {
-    const insertAt = 1; // 모든 인덱스가 될 수 있다.
-    // slice 함수를 이용한 삽입
-    const nextArtists = [
-      // 삽입 지점 이전 항목
-      ...artists.slice(0, insertAt),
-      // 새 항목
-      { id: nextId++, name: name },
-      // 삽입 지점 이후 항목
-      ...artists.slice(insertAt)
-    ];
-    setArtists(nextArtists);
-    setName('');
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus('submitting');
+    try {
+      await submitForm(answer);
+      setStatus('success');
+    } catch (err) {
+      setStatus('typing');
+      setError(err);
+    }
+  }
+
+  function handleTextareaChange(e) {
+    setAnswer(e.target.value);
   }
 
   return (
     <>
-      <h1>Inspiring sculptors:</h1>
-      <input
-        value={name}
-        onChange={e => setName(e.target.value)}
-      />
-      <button onClick={handleClick}>
-        Insert
-      </button>
-      <ul>
-        {artists.map(artist => (
-          <li key={artist.id}>{artist.name}</li>
-        ))}
-      </ul>
+      <h2>City quiz</h2>
+      <p>
+        In which city is there a billboard that turns air into drinkable water?
+      </p>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          value={answer}
+          onChange={handleTextareaChange}
+          disabled={status === 'submitting'}
+        />
+        <br />
+        <button disabled={
+          answer.length === 0 ||
+          status === 'submitting'
+        }>
+          Submit
+        </button>
+        {error !== null &&
+          <p className="Error">
+            {error.message}
+          </p>
+        }
+      </form>
     </>
   );
 }
-```
-<br>
 
-#### 배열에 기타 변경 적용하기
-
-<b>별도의 함수를 이용한 변경 적용</b>
-```js
-import { useState } from 'react';
-
-const initialList = [
-  { id: 0, title: 'Big Bellies' },
-  { id: 1, title: 'Lunar Landscape' },
-  { id: 2, title: 'Terracotta Army' },
-];
-
-export default function List() {
-  const [list, setList] = useState(initialList);
-
-  // 별도의 함수를 이용한 변경 적용
-  function handleClick() {
-    const nextList = [...list];
-    nextList.reverse();
-    setList(nextList);
-  }
-
-  return (
-    <>
-      <button onClick={handleClick}>
-        Reverse
-      </button>
-      <ul>
-        {list.map(artwork => (
-          <li key={artwork.id}>{artwork.title}</li>
-        ))}
-      </ul>
-    </>
-  );
-}
-```
-> JavaScript의 reverse() 및 sort() 함수는 원본 배열을 변경시키므로 직접 사용할 수 없다.
-<br>
-
-#### 배열 내부의 객체 업데이트하기
-중첩된 state를 업데이트할 때, 업데이트하려는 지점부터 최상위 레벨까지의 복사본을 만들어야 한다.
-
-```js
-import { useState } from 'react';
-
-let nextId = 3;
-const initialList = [
-  { id: 0, title: 'Big Bellies', seen: false },
-  { id: 1, title: 'Lunar Landscape', seen: false },
-  { id: 2, title: 'Terracotta Army', seen: true },
-];
-
-export default function BucketList() {
-  const [myList, setMyList] = useState(initialList);
-  const [yourList, setYourList] = useState(
-    initialList
-  );
-
-  function handleToggleMyList(artworkId, nextSeen) {
-    setMyList(myList.map(artwork => {
-      if (artwork.id === artworkId) {
-        // 변경된 *새* 객체를 만들어 반환한다.
-        return { ...artwork, seen: nextSeen };
+function submitForm(answer) {
+  // 네트워크에 접속한다고 가정해봅시다.
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      let shouldError = answer.toLowerCase() !== 'lima'
+      if (shouldError) {
+        reject(new Error('Good guess but a wrong answer. Try again!'));
       } else {
-        // 변경시키지 않고 반환한다.
-        return artwork;
+        resolve();
       }
-    }));
-  }
-
-  function handleToggleYourList(artworkId, nextSeen) {
-    setYourList(yourList.map(artwork => {
-      if (artwork.id === artworkId) {
-        // 변경된 *새* 객체를 만들어 반환한다.
-        return { ...artwork, seen: nextSeen };
-      } else {
-        // 변경시키지 않고 반환한다.
-        return artwork;
-      }
-    }));
-  }
-
-  return (
-    <>
-      <h1>Art Bucket List</h1>
-      <h2>My list of art to see:</h2>
-      <ItemList
-        artworks={myList}
-        onToggle={handleToggleMyList} />
-      <h2>Your list of art to see:</h2>
-      <ItemList
-        artworks={yourList}
-        onToggle={handleToggleYourList} />
-    </>
-  );
-}
-
-function ItemList({ artworks, onToggle }) {
-  return (
-    <ul>
-      {artworks.map(artwork => (
-        <li key={artwork.id}>
-          <label>
-            <input
-              type="checkbox"
-              checked={artwork.seen}
-              onChange={e => {
-                onToggle(
-                  artwork.id,
-                  e.target.checked
-                );
-              }}
-            />
-            {artwork.title}
-          </label>
-        </li>
-      ))}
-    </ul>
-  );
+    }, 1500);
+  });
 }
 ```
-<br>
-
-#### Immer로 간결한 업데이트 로직 작성하기
-
-```js
-import { useState } from 'react';
-import { useImmer } from 'use-immer';
-
-let nextId = 3;
-const initialList = [
-  { id: 0, title: 'Big Bellies', seen: false },
-  { id: 1, title: 'Lunar Landscape', seen: false },
-  { id: 2, title: 'Terracotta Army', seen: true },
-];
-
-export default function BucketList() {
-  const [myList, updateMyList] = useImmer(
-    initialList
-  );
-  const [yourArtworks, updateYourList] = useImmer(
-    initialList
-  );
-
-  function handleToggleMyList(id, nextSeen) {
-    updateMyList(draft => {
-      const artwork = draft.find(a =>
-        a.id === id
-      );
-      artwork.seen = nextSeen;
-    });
-  }
-
-  function handleToggleYourList(artworkId, nextSeen) {
-    updateYourList(draft => {
-      const artwork = draft.find(a =>
-        a.id === artworkId
-      );
-      artwork.seen = nextSeen;
-    });
-  }
-
-  return (
-    <>
-      <h1>Art Bucket List</h1>
-      <h2>My list of art to see:</h2>
-      <ItemList
-        artworks={myList}
-        onToggle={handleToggleMyList} />
-      <h2>Your list of art to see:</h2>
-      <ItemList
-        artworks={yourArtworks}
-        onToggle={handleToggleYourList} />
-    </>
-  );
-}
-
-function ItemList({ artworks, onToggle }) {
-  return (
-    <ul>
-      {artworks.map(artwork => (
-        <li key={artwork.id}>
-          <label>
-            <input
-              type="checkbox"
-              checked={artwork.seen}
-              onChange={e => {
-                onToggle(
-                  artwork.id,
-                  e.target.checked
-                );
-              }}
-            />
-            {artwork.title}
-          </label>
-        </li>
-      ))}
-    </ul>
-  );
-}
-```
-
 
 <br>
 <br>
 
 ## 참고 했던 자료 및 블로그  
- - <a href="https://ko.react.dev/learn/updating-arrays-in-state" target="_blank">https://ko.react.dev/learn/updating-arrays-in-state</a>
+ - <a href="https://ko.react.dev/learn/reacting-to-input-with-state" target="_blank">https://ko.react.dev/learn/reacting-to-input-with-state</a>
  
