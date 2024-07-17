@@ -92,11 +92,22 @@ function Message({ messageColor }) {
   const color = messageColor;
 ```
 
+<br>
+
+### State의 중복 피하기
+<b>만일 state가 쉽게 업데이트하기에 너무 중첩되어 있다면, “평탄”하게 만드는 것을 고려하라.</b>
+> 깊게 중복되어 있다면, 하나를 업뎃 하기 위에 엄청 장황한 코드를 써야 할 수 있음
+
+<br>
+
+### 깊게 중첩된 state 피하기
+<b>만일 state가 쉽게 업데이트하기에 너무 중첩되어 있다면, “평탄”하게 만드는 것을 고려하라.</b>
+> 깊게 중복되어 있다면, 하나를 업뎃 하기 위에 엄청 장황한 코드를 써야 할 수 있음
 
 
 <br>
 <br>
 
 ## 참고 했던 자료 및 블로그  
- - <a href="https://ko.react.dev/learn/reacting-to-input-with-state" target="_blank">https://ko.react.dev/learn/reacting-to-input-with-state</a>
+ - <a href="https://ko.react.dev/learn/choosing-the-state-structure" target="_blank">https://ko.react.dev/learn/choosing-the-state-structure</a>
  
