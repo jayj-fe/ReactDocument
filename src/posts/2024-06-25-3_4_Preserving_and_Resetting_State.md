@@ -107,7 +107,7 @@ function Counter() {
 
 ```
 
-<img src="../assets/img/react/preserving_state_remove_component.png" alt="" style="max-width:500px">
+<img src="/assets/img/react/preserving_state_remove_component.png" alt="" style="max-width:500px">
 
 <br>
 
@@ -170,7 +170,7 @@ function Counter({ isFancy }) {
 }
 ```
 
-<img src="../assets/img/react/preserving_state_remove_component2.png" alt="" style="max-width:500px">
+<img src="/assets/img/react/preserving_state_remove_component2.png" alt="" style="max-width:500px">
 
 ### 같은 위치의 다른 컴포넌트는 state를 초기화한다
 
@@ -227,11 +227,11 @@ function Counter() {
 
 <br>
 
-<img src="../assets/img/react/preserving_state_remove_component3.png" alt="" style="max-width:500px">
+<img src="/assets/img/react/preserving_state_remove_component3.png" alt="" style="max-width:500px">
 
 <br>
 
-<img src="../assets/img/react/preserving_state_remove_component4.png" alt="" style="max-width:500px">
+<img src="/assets/img/react/preserving_state_remove_component4.png" alt="" style="max-width:500px">
 
 <br>
 

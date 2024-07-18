@@ -69,14 +69,14 @@ React가 컴포넌트를 다시 렌더링할 때.
 
 <br>
 
-<img src="../assets/img/react//snapshot_01.png" alt="" style="max-width:700px">
+<img src="/assets/img/react//snapshot_01.png" alt="" style="max-width:700px">
 
 <br>
 state는 실제로 함수 외부에 마치 선반에 있는 것처럼 React 자체에 “존재”한다.
 
 <br>
 
-<img src="../assets/img/react//snapshot_02.png" alt="" style="max-width:700px">
+<img src="/assets/img/react//snapshot_02.png" alt="" style="max-width:700px">
 
 <br>
 

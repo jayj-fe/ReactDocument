@@ -57,7 +57,7 @@ export default function Accordion() {
 }
 ```
 
-<img src="../assets/img/react/react_state.png" alt="" style="max-width:700px">
+<img src="/assets/img/react/react_state.png" alt="" style="max-width:700px">
 
 ### 한 번에 하나의 패널만 열리도록 변경하기
 1. 자식 컴포넌트의 state를 제거한다.
@@ -169,7 +169,7 @@ function Panel({
 }
 ```
 
-<img src="../assets/img/react/react_state2.png" alt="" style="max-width:700px">
+<img src="/assets/img/react/react_state2.png" alt="" style="max-width:700px">
 
 <br>
 <br>
